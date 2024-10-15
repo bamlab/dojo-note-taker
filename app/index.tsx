@@ -3,57 +3,6 @@ import { Text, View, Button } from "react-native";
 import { Audio } from "expo-av";
 import axios from "axios";
 
-
-const summarizeText = async (text: string) => {
-  try {
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        messages: [{"role": "user", "content": `Summarize the following transcript:\n\n${text}`}],
-        model: "gpt-4o-mini",
-        temperature: 0.7,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer YOUR_API_KEY`,
-        },
-      }
-    );
-    console.log("ChatGPT summary response:", response.data.choices[0].message.content);
-    return response.data.choices[0].message.content;
-  } catch (error) {
-    console.error("Error summarizing transcript with ChatGPT:", error);
-    return null;
-  }
-};
-
-
-const speechToText = async (uri: string) => {
-  const formData = new FormData();
-  const file = {
-    uri,
-    name: "recording.m4a",
-    type: "audio/m4a",
-  } as any;
-  formData.append("file", file);
-  formData.append('model', 'whisper-1');
-
-  try {
-    const response = await axios.post("https://api.openai.com/v1/audio/transcriptions", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer YOUR_API_KEY`,
-      },
-    });
-    console.log("Whisper API response:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error getting transcript from Whisper API:", error);
-    return null;
-  }
-};
-
 export default function HomeScreen() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -119,3 +68,52 @@ export default function HomeScreen() {
     </View>
   );
 }
+
+const speechToText = async (uri: string) => {
+  const formData = new FormData();
+  const file = {
+    uri,
+    name: "recording.m4a",
+    type: "audio/m4a",
+  } as any;
+  formData.append("file", file);
+  formData.append('model', 'whisper-1');
+
+  try {
+    const response = await axios.post("https://api.openai.com/v1/audio/transcriptions", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer YOUR_API_KEY`,
+      },
+    });
+    console.log("Whisper API response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting transcript from Whisper API:", error);
+    return null;
+  }
+};
+
+const summarizeText = async (text: string) => {
+  try {
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        messages: [{"role": "user", "content": `Summarize the following transcript:\n\n${text}`}],
+        model: "gpt-4o-mini",
+        temperature: 0.7,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer YOUR_API_KEY`,
+        },
+      }
+    );
+    console.log("ChatGPT summary response:", response.data.choices[0].message.content);
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    console.error("Error summarizing transcript with ChatGPT:", error);
+    return null;
+  }
+};
