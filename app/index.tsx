@@ -4,8 +4,7 @@ import { Audio } from "expo-av";
 import axios from "axios";
 
 export default function HomeScreen() {
-  const [recording, setRecording] = useState<Audio.Recording | null>(null);
-  const [isRecording, setIsRecording] = useState(false);
+  const [recording, setRecording] = useState<Audio.Recording>();
   const [summary, setSummary] = useState("");
 
   const startRecording = async () => {
@@ -19,7 +18,6 @@ export default function HomeScreen() {
 
         const { recording } = await Audio.Recording.createAsync();
         setRecording(recording);
-        setIsRecording(true);
       } else {
         console.log("Permission to access microphone is required!");
       }
@@ -29,7 +27,6 @@ export default function HomeScreen() {
   };
 
   const stopRecording = async () => {
-    setIsRecording(false);
     if (recording) {
       await recording.stopAndUnloadAsync();
       const uri = recording.getURI();
@@ -47,7 +44,7 @@ export default function HomeScreen() {
 
       setSummary(summary);
 
-      setRecording(null);
+      setRecording(undefined);
     }
   };
 
@@ -55,8 +52,8 @@ export default function HomeScreen() {
     <View
       style={styles.container}>
       <Button
-        title={isRecording ? "Stop Recording" : "Start Recording"}
-        onPress={isRecording ? stopRecording : startRecording}
+        title={recording ? "Stop Recording" : "Start Recording"}
+        onPress={recording ? stopRecording : startRecording}
       />
       <Text>
         {summary}
