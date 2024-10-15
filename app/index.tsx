@@ -54,7 +54,7 @@ const speechToText = async (uri: string) => {
   }
 };
 
-export default function Index() {
+export default function HomeScreen() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [summary, setSummary] = useState("");
