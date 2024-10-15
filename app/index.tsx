@@ -31,6 +31,11 @@ export default function HomeScreen() {
   const stopRecording = async () => {
     if (recording) {
       await recording.stopAndUnloadAsync();
+      await Audio.setAudioModeAsync(
+        {
+          allowsRecordingIOS: false,
+        }
+      );
       const uri = recording.getURI();
       console.log("Recording stopped and stored at", uri);
       
