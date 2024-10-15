@@ -3,7 +3,7 @@ import { Text, View, Button, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import axios from "axios";
 
-const OPENAI_API_KEY = '';
+const OPENAI_API_KEY = "";
 
 export default function HomeScreen() {
   const [recording, setRecording] = useState<Audio.Recording>();
@@ -85,7 +85,7 @@ const speechToText = async (uri: string) => {
     type: "audio/m4a",
   } as any;
   formData.append("file", file);
-  formData.append('model', 'whisper-1');
+  formData.append("model", "whisper-1");
 
   try {
     const response = await axios.post("https://api.openai.com/v1/audio/transcriptions", formData, {
