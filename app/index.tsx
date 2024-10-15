@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View, Button, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import axios from "axios";
 
@@ -53,11 +53,7 @@ export default function HomeScreen() {
 
   return (
     <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
+      style={styles.container}>
       <Button
         title={isRecording ? "Stop Recording" : "Start Recording"}
         onPress={isRecording ? stopRecording : startRecording}
@@ -68,6 +64,14 @@ export default function HomeScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: "center",
+  },
+});
 
 const speechToText = async (uri: string) => {
   const formData = new FormData();
