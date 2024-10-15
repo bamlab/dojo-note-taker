@@ -3,6 +3,8 @@ import { Text, View, Button, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import axios from "axios";
 
+const OPENAI_API_KEY = '';
+
 export default function HomeScreen() {
   const [recording, setRecording] = useState<Audio.Recording>();
   const [summary, setSummary] = useState("");
@@ -84,7 +86,7 @@ const speechToText = async (uri: string) => {
     const response = await axios.post("https://api.openai.com/v1/audio/transcriptions", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer YOUR_API_KEY`,
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
       },
     });
     console.log("Whisper API response:", response.data);
@@ -107,7 +109,7 @@ const summarizeText = async (text: string) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer YOUR_API_KEY`,
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
         },
       }
     );
